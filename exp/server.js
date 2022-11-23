@@ -5,7 +5,7 @@ const app = express();
 const {Pool} = require('pg');
 const pool = new Pool({
     user: 'postgres',
-    host: '172.17.0.2',
+    host: 'postgres_db',
     database: 'postgres',
     password: 'postgres',
     port: 5432,
@@ -20,6 +20,10 @@ app.use(bodyParser.json());
 app.listen(3000, '0.0.0.0', () => {
     console.log('Application listening at 0.0.0.0:3000');
 })
+
+app.get('/', (req, res) => {
+    res.send("Express is working");
+});
 
 app.get('/cars', async (req, res) => {
     const result = await pool.query('SELECT * FROM Car');

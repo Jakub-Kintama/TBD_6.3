@@ -1,6 +1,6 @@
 create table Car
 (
-    id      serial primary key integer,
+    id      serial primary key,
     model   varchar(255),
     year    integer,
     details text

@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 def get_DB():
-    return psycopg2.connect(host='172.17.0.2', database='postgres', user='postgres', password='postgres', port=5432)
+    return psycopg2.connect(host='postgres_db', database='postgres', user='postgres', password='postgres', port=5432)
 
 @app.route('/')
 def home():
