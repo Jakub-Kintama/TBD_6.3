@@ -1,0 +1,3 @@
+exp/node_modules/*
+exp/package-lock.json
+pg-data/*
