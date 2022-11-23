@@ -1,0 +1,47 @@
+version: "3.9"
+services:
+  db:
+    container_name: postgres
+    labels:
+      - traefik.port=5432
+    volumes:
+      - '/db:/docker-entrypoint-initdb.d'
+      - 'pg-data:/var/lib/postgresql/data'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=db
+    image: 'postgres:11.5-alpine'
+  
+  exp:
+    ports:
+      - '80:80'
+    volumes:
+      - '/var/run/docker.sock:/tmp/docker.sock:ro'
+    restart: always
+    logging:
+      options:
+        max-size: 1g
+    container_name: express
+    labels:
+      - traefik.enable=true
+      - traefik.port=3000
+      - traefik.priority=1
+      - traefik.http.routers.express.rule=Host(\test.com\)
+
+  flask:
+    container_name: flask
+    labels:
+      - traefik.enable=true
+      - traefik.port=5000
+      - traefik.priority=10
+      - 'traefik.http.routers.flask.rule=Host(\test.com\) && PathPrefix(\/cars\)'
+
+  traefik:
+    container_name: traefik
+    ports:
+      - '8080:8080'
+      - '80:80'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    image: 'traefik:latest'
